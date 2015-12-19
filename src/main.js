@@ -1,36 +1,40 @@
 'use strict';
 
 import App from "./app";
+import * as config from "./config";
 
-var canvasEl, gl;
+var renderer, scene, app;
 
 function init() {
-		console.log('init()');
-		canvasEl = document.createElement("canvas");
-		canvasEl.id = "canvasEl";
-		canvasEl.width = window.innerWidth;
-		canvasEl.height = window.innerHeight;
-		canvasEl.style.position = "absolute";
+	console.log('init()');
 
-		gl = WebGLUtils.setupWebGL(canvasEl, {
-					premultipliedAlpha: true
-				});
-		if(!gl){ return; }
+	renderer = new THREE.WebGLRenderer();
+	scene = new THREE.Scene();
+	app = new App();
 
-		gl.viewportWidth = window.innerWidth;
-		gl.viewportHeight = window.innerHeight;
-		document.body.appendChild(canvasEl);
+	renderer.setSize(config.width(), config.height());
 
-		new App(gl);
+	app.init(scene);
 
-		window.addEventListener('resize', onResize);
+	document.body.appendChild(renderer.domElement );
+
+	window.addEventListener('resize', onResize);
+
+	animloop();
 }
 
 
 function onResize(e) {
-	console.log('resize (' + window.innerWidth + 'x' + window.innerHeight + ')');
-	canvasEl.width    = window.innerWidth;
-	canvasEl.height   = window.innerHeight;
+	console.log('resize (' + config.width() + 'x' + config.height() + ')');
+	renderer.setSize(config.width(), config.height());
+}
+
+function animloop(){
+
+	// requestAnimFrame(animloop);
+
+	renderer.render(scene, app.getCamera());
+
 }
 
 init();
