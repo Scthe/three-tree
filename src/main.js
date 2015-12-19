@@ -31,7 +31,7 @@ function onResize(e) {
 
 function animloop(){
 
-	// requestAnimFrame(animloop);
+	requestAnimFrame(animloop);
 
 	renderer.render(scene, app.getCamera());
 

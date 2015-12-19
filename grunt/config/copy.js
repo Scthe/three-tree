@@ -10,7 +10,7 @@ module.exports = {
       src: [
         'images/*.{ico,png,gif,jpg}',
         '*.html',
-        'webgl-utils.js'
+        'vendor/**/*'
       ]
   },
   watchHtml: {

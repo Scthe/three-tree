@@ -8,6 +8,11 @@ var cfg = {
 		aspect: () => {
 			// return window.innerWidth / window.innerHeight;
 			return width() / height();
+		},
+		position: {
+			x: 0,
+			y: 0,
+			z: 500
 		}
 	},
 	width: width,
