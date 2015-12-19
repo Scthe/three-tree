@@ -9,8 +9,16 @@ module.exports = {
       dest: '<%= buildDir %>',
       src: [
         'images/*.{ico,png,gif,jpg}',
-        '*.html'
+        '*.html',
+        'webgl-utils.js'
       ]
+  },
+  watchHtml: {
+    cwd: '<%= app %>',
+    dest: '.tmp/',
+    src: [
+      '*.html',
+    ]
   },
   vendor: {
       expand: true,

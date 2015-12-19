@@ -6,5 +6,9 @@ module.exports = {
     // files: ['<%= config.app %>/src/{,*/}*.js'],
     files: ['src/**/*.js'],
     tasks: ['browserify']
-  }
+  },
+  index: {
+    files: ['*.html'],
+    tasks: ['copy:watchHtml']
+  },
 };

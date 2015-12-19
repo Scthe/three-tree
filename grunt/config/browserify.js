@@ -11,7 +11,7 @@ module.exports = {
     },
     files: {
       // "<%= buildDir %>/app.js": ['<%= config.app %>/src/app.js']
-      ".tmp/app.js": ['<%= config.app %>/src/app.js']
+      ".tmp/app.js": ['<%= config.app %>/src/main.js']
     }
   }
 };

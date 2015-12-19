@@ -35,7 +35,8 @@ module.exports = function(grunt) {
       'env:dev',
       'loadconst',
       'clean',
-      'copy',
+      'copy:assets',
+      'copy:vendor',
       'autoprefixer:dist',
       'browserify',
       'connect',
@@ -49,7 +50,8 @@ module.exports = function(grunt) {
     'env:prod',
     'loadconst',
     'clean',
-    'copy',
+    'copy:assets',
+    'copy:vendor',
     'browserify',
     'autoprefixer:build'
   ]);
