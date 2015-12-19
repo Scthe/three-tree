@@ -1,6 +1,14 @@
 'use strict';
 
+// TODO particles
+// TODO camera move
+// TODO all gl settings
+// TODO native Position class
+// TODO materials
+// TODO UI for config
+
 import * as config from "./config";
+import ParticleSystem from "./particleSystem";
 
 class App {
 	constructor(){
@@ -54,10 +62,16 @@ class App {
 												groundOpt.position.y,
 												groundOpt.position.z );
 
+		this.particles = new ParticleSystem(scene);
+
 		// scene.add(this.sphere);
 		scene.add(ground);
 		scene.add(this.camera);
 		scene.add(pointLight);
+	}
+
+	update(){
+		this.particles.update();
 	}
 
 	_createGround(){

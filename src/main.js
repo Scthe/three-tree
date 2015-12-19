@@ -33,6 +33,8 @@ function animloop(){
 
 	requestAnimFrame(animloop);
 
+	app.update();
+
 	renderer.render(scene, app.getCamera());
 
 }

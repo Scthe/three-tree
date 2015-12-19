@@ -26,6 +26,26 @@ var cfg = {
 			z: 0
 		}
 	},
+	flowers: {
+		count   : 500,
+		range   : 300,
+		emitRate: 60,
+		life    : [75, 225],
+		size    : [10, 20],
+		velocity   : 3.5,
+		// rotVelocity: 7.5,
+		wind: {
+			x: 1,
+			y: -0.1,
+			z: 1,
+			speed: .001
+		},
+		position: {
+			x: 0,
+			y: 0,
+			z: 0
+		}
+	},
 	width: width,
 	height: height
 };
