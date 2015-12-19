@@ -8,7 +8,7 @@ module.exports = {
   },
   dist: {
     options: {
-      open: true,
+      open: false,
       base: '<%= buildDir %>',
       // keepalive: true,
       livereload: false
