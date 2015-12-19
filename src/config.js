@@ -12,7 +12,18 @@ var cfg = {
 		position: {
 			x: 0,
 			y: 0,
-			z: 500
+			z: 650
+		}
+	},
+	ground: {
+		gridDesity: 25,
+		width:  1500,
+		height: 1500,
+		heightVariance: 20,
+		position: {
+			x: 0,
+			y: -160,
+			z: 0
 		}
 	},
 	width: width,
