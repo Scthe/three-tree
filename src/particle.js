@@ -18,6 +18,7 @@ class Particle extends THREE.Mesh{
 		var toAngle = (e) => { return Math.max(0, Math.min(e, 360)); };
 		this.life--;
 		this.position.add(this.velocity);
+		this.position.setY(Math.max(this.position.y, config.ground.position.y));
 
 		var rot = this.rotation.toVector3();
 		rot.add(this.rotVelocity);
@@ -25,6 +26,15 @@ class Particle extends THREE.Mesh{
 		rot.setY(toAngle(rot.y));
 		rot.setZ(toAngle(rot.z));
 		this.rotation.setFromVector3(rot);
+
+		this.material.opacity = this.getOpacity();
+	}
+
+	getOpacity(){
+		if(!this.isAlive()) return 0;
+
+		var halfLife = this.maxLife/2;
+		return this.life > halfLife ? 1.0 : this.life / halfLife;
 	}
 
 	onSpawn(particleSystemCfg){
@@ -53,6 +63,7 @@ class Particle extends THREE.Mesh{
 		);
 
 		this.visible = true;
+		this.material.opacity = 1.0;
 	}
 
 	onDie(){

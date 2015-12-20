@@ -20,13 +20,14 @@ function init() {
 	scene = new THREE.Scene();
 	app = new App();
 
+	renderer.setClearColor(config.background);
 	renderer.setSize(config.width(), config.height());
 
 	var sceneLoadedPromise = app.init(scene);
 
 	var ui = new UI();
 	sceneLoadedPromise.then(() => {
-		ui.init(scene, app);
+		ui.init(renderer, scene, app);
 	});
 
 	document.body.appendChild(renderer.domElement );

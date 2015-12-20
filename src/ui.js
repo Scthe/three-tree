@@ -10,17 +10,24 @@ class UI {
 	constructor(){
 	}
 
-	init(scene, app){
+	init(renderer, scene, app){
 		var cfg = config,
 		    gui = new dat.GUI(),
 		    folder, obj;
+
+		// general
+		addColorCtrls(gui, cfg.background, 'background', 'background', v => {
+			renderer.setClearColor(config.background);
+		});
+		addColorCtrls(gui, scene.fog.color, 'color', 'Fog color');
+		gui.add(scene.fog, 'density', 0.0, 0.005).name('Fog density');
 
 		// light
 		obj = scene.getObjectByName('light');
 		folder = gui.addFolder("Light");
 		addColorCtrls(folder, obj.color);
 		folder.add(obj, 'intensity', 0.1, 1);
-		folder.add(obj, 'distance', 0.1, SCENE_RANGE);
+		folder.add(obj, 'distance', 0.1, SCENE_RANGE * 3);
 		folder.add(obj, 'decay', 0.1, 1);
 		addVectorCtrls(folder, obj.position);
 
@@ -28,7 +35,7 @@ class UI {
 		obj = scene.getObjectByName('tree');
 		folder = gui.addFolder("Tree");
 		addSingleValueToVectorCtrls(folder, obj, 'scale', 200, 800);
-		// addColorCtrls(folder, obj.material.color);
+		addColorCtrls(folder, obj.material.color);
 		addVectorCtrls(folder, obj.position);
 
 		// ground
@@ -38,7 +45,7 @@ class UI {
 		groundGeomProperty(folder, obj, 'width',  100, 5000);
 		groundGeomProperty(folder, obj, 'height', 100, 5000);
 		groundGeomProperty(folder, obj, 'heightVariance', 0, 80);
-		// folder.addColor(obj, 'color');
+		addColorCtrls(folder, obj.material.color);
 		addVectorCtrls(folder, obj.position);
 
 		// flowers
@@ -48,12 +55,13 @@ class UI {
 		folder.add(obj, 'count', 10, 10000).onChange( (value) => {
 			particleSystem.refreshCount();
 		});
-		folder.add(obj, 'emitRate', 0, 1000);
+		folder.add(obj, 'emitRate', 0, 400);
 		folder.add(obj, 'range', 10, 1000);
 		addRangeCtrl(folder, obj, 'life', 10, 1000);
 		addRangeCtrl(folder, obj, 'scale', 1, 100);
-		folder.add(obj, 'velocity', 0.1, 20);
-		// folder.addColor(obj, 'color');
+		folder.add(obj, 'velocity', 0.1, 10);
+		folder.add(obj, 'rotVelocity', 0, 2);
+		addColorCtrls(folder, obj.material.color);
 		addVectorCtrls(folder, obj.position);
 
 		// folder.open();
@@ -61,24 +69,20 @@ class UI {
 		obj = cfg.flowers.wind;
 		folder = gui.addFolder("Wind");
 		folder.add(obj, 'speed' , 0, 10);
-		addVectorCtrls(folder, obj.force);
+		addVectorCtrls(folder, obj.force, 30);
 
 		// orbit
-		// TODO orbit speed
 		var ctrl = app.getControls(),
-		    orbitProps = {},
 				orbitSpeed = {
 					Slow: 0.5,
 					Normal: 1,
 					Fast: 5
 				};
-		orbitProps['Orbit speed'] = ctrl.rotateSpeed;
-		orbitProps['Orbit enabled'] = ctrl.enabled;
 
-		// gui.add(orbitProps, 'Orbit speed', orbitSpeed).onChange( v => {
+		// gui.add(ctrl, 'speed').name('Orbit speed').onChange( v => {
 			// console.log(v);
 		// });
-		gui.add(orbitProps, 'Orbit enabled').onChange( v => {
+		gui.add(ctrl, 'enabled').name('Orbit enabled').onChange( v => {
 			ctrl.enabled = v;
 		});
 	}
@@ -94,7 +98,6 @@ function groundGeomProperty(folder, obj, prop, min, max){
 	    a = {};
 	a[prop] = oldCfg[prop];
 
-
 	folder.add(a, prop, min, max).step(1).onChange((value) => {
 		a[prop] = value;
 
@@ -106,10 +109,11 @@ function groundGeomProperty(folder, obj, prop, min, max){
 	});
 };
 
-function addVectorCtrls(gui, pos){
-	gui.add(pos, 'x', -SCENE_RANGE, SCENE_RANGE);
-	gui.add(pos, 'y', -SCENE_RANGE, SCENE_RANGE);
-	gui.add(pos, 'z', -SCENE_RANGE, SCENE_RANGE);
+function addVectorCtrls(gui, pos, range){
+	range = range || SCENE_RANGE;
+	gui.add(pos, 'x', -range, range);
+	gui.add(pos, 'y', -range, range);
+	gui.add(pos, 'z', -range, range);
 }
 
 function addRangeCtrl(gui, obj, prop, min, max){
@@ -126,12 +130,15 @@ function addRangeCtrl(gui, obj, prop, min, max){
 /**
  * dat.gui and three does not interoperate nicely on colors
  */
-function addColorCtrls(gui, colorObj){
-	var a = {
-		color: `#${colorObj.getHexString()}`
-	};
-	gui.addColor(a, 'color').onChange((value) => {
+function addColorCtrls(gui, colorObj, prop, name, cb){
+	prop = prop || 'color';
+	name = name || prop;
+	var a = {};
+	a[prop] = `#${colorObj.getHexString()}`;
+
+	gui.addColor(a, prop).name(name).onChange((value) => {
 		colorObj.setStyle(value);
+		if(cb) cb(value);
 	});
 }
 

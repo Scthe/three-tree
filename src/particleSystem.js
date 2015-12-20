@@ -22,7 +22,11 @@ class ParticleSystem {
 	_fillParticleArray(cnt){
 		var i = this.particles.length;
 		for(; i < cnt; i++){
-			var p = new Particle(this.geo, this.cfg.material);
+
+			var material = this.createMaterial();
+
+			var p = new Particle(this.geo, material);
+
 			// p.onSpawn();
 			p.onDie();
 
@@ -31,6 +35,21 @@ class ParticleSystem {
 			this.scene.add(p);
 		}
 		console.log(`particle array has ${this.particles.length} entries`);
+	}
+
+	createMaterial(){
+		var m = this.cfg.material,
+		    material = new THREE.MeshLambertMaterial();
+		_.chain(m)
+		  .keys()
+			.filter( k => {
+				return !_.isFunction(m[k]);
+			})
+			.each( k => {
+				material[k] = m[k];
+			});
+		material.transparent = true;
+		return material;
 	}
 
 	update(){

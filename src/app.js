@@ -1,7 +1,7 @@
 'use strict';
 
 // TODO all gl settings
-// TODO materials
+// TODO better spawn position
 
 import * as config from "./config";
 import ParticleSystem from "./particleSystem";
@@ -53,6 +53,7 @@ class App {
 		var loader = new THREE.OBJLoader();
 		loader.load( "vendor/models/tree.obj", function ( object ) {
 			var treeCfg = config.tree;
+			object = object.children[0];
 			object.name = 'tree';
 			object.material = treeCfg.material;
 			object.position.setVector(treeCfg.position);
@@ -71,6 +72,8 @@ class App {
 
 		// flowers
 		this.particles = new ParticleSystem(scene);
+
+		scene.fog = new THREE.FogExp2(config.fog.color, config.fog.density);
 
 		// scene.add(this.sphere);
 		scene.add(ground);
