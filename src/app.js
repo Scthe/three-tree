@@ -91,6 +91,10 @@ class App {
 	getCamera(){
 		return this.camera;
 	}
+
+	getParticleSystem(){
+		return this.particles;
+	}
 }
 
 export default App;

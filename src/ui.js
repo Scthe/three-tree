@@ -10,7 +10,7 @@ class UI {
 	constructor(){
 	}
 
-	init(scene){
+	init(scene, app){
 		var cfg = config,
 		    gui = new dat.GUI(),
 		    folder, obj;
@@ -43,15 +43,18 @@ class UI {
 
 		// flowers
 		obj = cfg.flowers;
+		var particleSystem = app.getParticleSystem();
 		folder = gui.addFolder("Flowers");
-		folder.add(obj, 'count', 10, 10000);
-		// folder.add(obj, 'emitRate', 0, 1000);
-		// folder.add(obj, 'range', 10, 1000);
-		// folder.add(obj, 'life', 10, 1000);
-		// folder.add(obj, 'size', 1, 100);
-		// folder.add(obj, 'velocity', 0.1, 20);
+		folder.add(obj, 'count', 10, 10000).onChange( (value) => {
+			particleSystem.refreshCount();
+		});
+		folder.add(obj, 'emitRate', 0, 1000);
+		folder.add(obj, 'range', 10, 1000);
+		addRangeCtrl(folder, obj, 'life', 10, 1000);
+		addRangeCtrl(folder, obj, 'scale', 1, 100);
+		folder.add(obj, 'velocity', 0.1, 20);
 		// folder.addColor(obj, 'color');
-		// addVectorCtrls(folder, obj.position);
+		addVectorCtrls(folder, obj.position);
 
 		folder.open();
 
@@ -78,7 +81,7 @@ function groundGeomProperty(folder, obj, prop, min, max){
 	a[prop] = oldCfg[prop];
 
 
-	folder.add(a, prop, min, max).step(1).onChange(function(value) {
+	folder.add(a, prop, min, max).step(1).onChange((value) => {
 		a[prop] = value;
 
 		groundGeom.dispose();
@@ -95,6 +98,17 @@ function addVectorCtrls(gui, pos){
 	gui.add(pos, 'z', -SCENE_RANGE, SCENE_RANGE);
 }
 
+function addRangeCtrl(gui, obj, prop, min, max){
+	var a = {};
+	a[prop] = (obj[prop][0] + obj[prop][1]) / 2;
+
+	gui.add(a, prop, min, max).onChange( v =>{
+		var variance = Math.sqrt(v);
+		obj[prop][0] = Math.max(0, v - variance);
+		obj[prop][1] = v + variance;
+	});
+}
+
 /**
  * dat.gui and three does not interoperate nicely on colors
  */
@@ -102,7 +116,7 @@ function addColorCtrls(gui, colorObj){
 	var a = {
 		color: `#${colorObj.getHexString()}`
 	};
-	gui.addColor(a, 'color').onChange(function(value) {
+	gui.addColor(a, 'color').onChange((value) => {
 		colorObj.setStyle(value);
 	});
 }
@@ -111,7 +125,7 @@ function addSingleValueToVectorCtrls(gui, obj, prop, min, max){
 	var a = {};
 	a[prop] = obj[prop].x;
 
-	gui.add(a, prop, min, max).onChange(function(value) {
+	gui.add(a, prop, min, max).onChange((value) => {
 		obj[prop].set(value, value, value);
 	});
 }

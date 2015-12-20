@@ -26,7 +26,7 @@ function init() {
 
 	var ui = new UI();
 	sceneLoadedPromise.then(() => {
-		ui.init(scene);
+		ui.init(scene, app);
 	});
 
 	document.body.appendChild(renderer.domElement );

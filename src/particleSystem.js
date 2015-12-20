@@ -14,12 +14,12 @@ class ParticleSystem {
 		this.geo = ParticleSystem.createParticleGeometry();
 
 		this.particles = [];
-		this.fillParticleArray(this.cfg.count);
+		this._fillParticleArray(this.cfg.count);
 
 		this._emit(this.cfg.count / 3);
 	}
 
-	fillParticleArray(cnt){
+	_fillParticleArray(cnt){
 		var i = this.particles.length;
 		for(; i < cnt; i++){
 			var p = new Particle(this.geo, this.cfg.material);
@@ -36,6 +36,10 @@ class ParticleSystem {
 	update(){
 		this._updateExisting();
 		this._emit(this.cfg.emitRate);
+	}
+
+	refreshCount(){
+		this._fillParticleArray(this.cfg.count);
 	}
 
 	_emit(cnt){
