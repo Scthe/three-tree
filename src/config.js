@@ -41,10 +41,10 @@ var cfg = {
 		life    : [75, 225],
 		scale   : [10, 20],
 		velocity   : 3.5,
-		// rotVelocity: 7.5,
+		rotVelocity: 0.07,
 		wind: {
 			force: new THREE.Vector3(1, -0.1, 1),
-			speed: .001
+			speed: 1
 		},
 		position: new THREE.Vector3(0, 0, 0),
 		material: new THREE.MeshLambertMaterial({

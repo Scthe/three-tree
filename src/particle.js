@@ -7,25 +7,24 @@ class Particle extends THREE.Mesh{
 	constructor(geometry, material){
 		super(geometry, material);
 
-		this.velocity = new THREE.Vector3(0, 0, 0);
-
-		// this.rx = 0;
-		// this.ry = 0;
-		// this.rz = 0;
-		// this.vrx = 0;
-		// this.vry = 0;
-		// this.vrz = 0;
-
 		this.life = 0;
 		this.maxLife = 0; // to reduce opacity later in life
+
+		this.velocity = new THREE.Vector3(0, 0, 0);
+		this.rotVelocity = new THREE.Vector3(0, 0, 0);
 	}
 
 	update() {
+		var toAngle = (e) => { return Math.max(0, Math.min(e, 360)); };
 		this.life--;
 		this.position.add(this.velocity);
-		// this.rx += this.vrx;
-		// this.ry += this.vry;
-		// this.rz += this.vrz;
+
+		var rot = this.rotation.toVector3();
+		rot.add(this.rotVelocity);
+		rot.setX(toAngle(rot.x));
+		rot.setY(toAngle(rot.y));
+		rot.setZ(toAngle(rot.z));
+		this.rotation.setFromVector3(rot);
 	}
 
 	onSpawn(particleSystemCfg){
@@ -47,9 +46,11 @@ class Particle extends THREE.Mesh{
 			randomRange(-velocity, 0),
 			randomRange(-velocity, velocity)
 		);
-		// this.vrx = randomRange(-rotVelocity, rotVelocity);
-		// this.vry = randomRange(-rotVelocity, rotVelocity);
-		// this.vrz = randomRange(-rotVelocity, rotVelocity);
+		this.rotVelocity.set(
+			randomRange(-rotVelocity, rotVelocity),
+			randomRange(-rotVelocity, rotVelocity),
+			randomRange(-rotVelocity, rotVelocity)
+		);
 
 		this.visible = true;
 	}

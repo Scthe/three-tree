@@ -61,14 +61,15 @@ class ParticleSystem {
 	}
 
 	_updateExisting(){
-		var wind = this.cfg.wind;
+		var windOpt = this.cfg.wind;
 
 		_.chain(this.particles)
 			.filter( e => {return e.isAlive()} )
 			.each((p, i) => {
-				// p.vx += wind.force.x * wind.speed;
-				// p.vy += wind.force.y * wind.speed;
-				// p.vz += wind.force.z * wind.speed;
+
+				var wind = windOpt.force.clone().multiplyScalar(windOpt.speed);
+				p.position.add(wind);
+
 				p.update();
 
 				if(p.life < 0 ){
