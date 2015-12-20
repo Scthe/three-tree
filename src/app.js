@@ -16,6 +16,12 @@ class App {
 
 	init(scene){
 
+		var resolve, reject,
+				loadedPromise = new Promise( (resolve_, reject_) => {
+					resolve = resolve_;
+					reject = reject_;
+				});
+
 		// camera
 		var cameraOpt = config.camera;
 		this.camera = new THREE.PerspectiveCamera(
@@ -23,6 +29,7 @@ class App {
 			cameraOpt.aspect(),
 			cameraOpt.near,
 			cameraOpt.far);
+		this.camera.name = 'camera';
 		this.camera.lookAt(cameraOpt.lookAt);
 		this.camera.position.setVector(cameraOpt.position);
 		this.controls = new THREE.OrbitControls(this.camera);
@@ -40,6 +47,7 @@ class App {
 		// light
 		var lightCfg = config.light,
 		    pointLight = new THREE.PointLight(lightCfg.color);
+		pointLight.name = 'light';
 		pointLight.position.setVector(lightCfg.position);
 
 
@@ -47,16 +55,19 @@ class App {
 		var loader = new THREE.OBJLoader();
 		loader.load( "vendor/models/tree.obj", function ( object ) {
 			var treeCfg = config.tree;
+			object.name = 'tree';
 			object.material = treeCfg.material;
 			object.position.setVector(treeCfg.position);
-			object.scale.multiplyScalar(treeCfg.scale);
+			object.scale.set(treeCfg.scale, treeCfg.scale, treeCfg.scale);
 			scene.add(object);
+			resolve('tree was loaded');
 		});
 
 		// ground
 		var groundOpt = config.ground,
 		    groundGeom = this._createGround(),
 		    ground = new THREE.Mesh(groundGeom, groundOpt.material);
+		ground.name = 'ground';
 		ground.position.setVector(groundOpt.position);
 
 		// flowers
@@ -66,6 +77,8 @@ class App {
 		scene.add(ground);
 		scene.add(this.camera);
 		scene.add(pointLight);
+
+		return loadedPromise;
 	}
 
 	update(){

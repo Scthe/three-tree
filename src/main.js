@@ -1,7 +1,8 @@
 'use strict';
 
-import App from "./app";
 import * as config from "./config";
+import App from "./app";
+import UI from "./ui";
 
 var renderer, scene, app;
 
@@ -21,7 +22,12 @@ function init() {
 
 	renderer.setSize(config.width(), config.height());
 
-	app.init(scene);
+	var sceneLoadedPromise = app.init(scene);
+
+	var ui = new UI();
+	sceneLoadedPromise.then(() => {
+		ui.init(scene);
+	});
 
 	document.body.appendChild(renderer.domElement );
 

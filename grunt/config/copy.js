@@ -26,9 +26,7 @@ module.exports = {
       dest: '<%= buildDir %>/vendor',
       src: [
         'underscore/underscore-min.js',
-        'three/three.min.js',
-        // 'dat-gui/vendor/dat.color.js',
-        // 'dat-gui/vendor/dat.gui.js',
+        'three/three.min.js'
       ]
   }
 };

@@ -12,7 +12,7 @@ var cfg = {
 		lookAt: new THREE.Vector3()
 	},
 	light: {
-		color: 0xffffff,
+		color: 0x000000,
 		position: new THREE.Vector3(10, 50, 130)
 	},
 	tree: {
