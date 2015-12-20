@@ -5,6 +5,13 @@ import * as config from "./config";
 
 var renderer, scene, app;
 
+THREE.Vector3.prototype.setVector = function(v){
+	this.setX(v.x);
+	this.setY(v.y);
+	this.setZ(v.z);
+}
+
+
 function init() {
 	console.log('init()');
 

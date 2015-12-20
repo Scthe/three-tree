@@ -15,6 +15,8 @@ class App {
 	}
 
 	init(scene){
+
+		// camera
 		var cameraOpt = config.camera;
 		this.camera = new THREE.PerspectiveCamera(
 			cameraOpt.angle,
@@ -22,47 +24,42 @@ class App {
 			cameraOpt.near,
 			cameraOpt.far);
 		this.camera.lookAt(cameraOpt.lookAt);
-		this.camera.position.x = cameraOpt.position.x;
-		this.camera.position.y = cameraOpt.position.y;
-		this.camera.position.z = cameraOpt.position.z;
+		this.camera.position.setVector(cameraOpt.position);
 		this.controls = new THREE.OrbitControls(this.camera);
 
+		/*
 		var sphereMaterial = new THREE.MeshLambertMaterial({
 			color: 0xCC0000
 		});
-
 		var radius = 50, segments = 16, rings = 16;
-
 		this.sphere = new THREE.Mesh(
 			new THREE.SphereGeometry(radius, segments, rings),
 			sphereMaterial);
+		*/
 
-		var pointLight = new THREE.PointLight( 0xFFFFFF );
-		pointLight.position.x = 10;
-		pointLight.position.y = 50;
-		pointLight.position.z = 130;
+		// light
+		var lightCfg = config.light,
+		    pointLight = new THREE.PointLight(lightCfg.color);
+		pointLight.position.setVector(lightCfg.position);
 
-		var materialScene = new THREE.MeshLambertMaterial({
-			color: 0xff0000,
-			// shading: THREE.FlatShading
-		});
 
+		// tree
 		var loader = new THREE.OBJLoader();
 		loader.load( "vendor/models/tree.obj", function ( object ) {
-			object.material = materialScene;
-			object.position.set( 0, -150, 0 );
-			object.scale.multiplyScalar( 400 );
-			scene.add( object );
+			var treeCfg = config.tree;
+			object.material = treeCfg.material;
+			object.position.setVector(treeCfg.position);
+			object.scale.multiplyScalar(treeCfg.scale);
+			scene.add(object);
 		});
 
-		var groundOpt = config.ground;
-		var groundGeom = this._createGround();
-		// var ground = new THREE.Mesh( groundGeom, new THREE.MeshNormalMaterial() );
-		var ground = new THREE.Mesh(groundGeom, materialScene);
-		ground.position.set(groundOpt.position.x,
-												groundOpt.position.y,
-												groundOpt.position.z );
+		// ground
+		var groundOpt = config.ground,
+		    groundGeom = this._createGround(),
+		    ground = new THREE.Mesh(groundGeom, groundOpt.material);
+		ground.position.setVector(groundOpt.position);
 
+		// flowers
 		this.particles = new ParticleSystem(scene);
 
 		// scene.add(this.sphere);

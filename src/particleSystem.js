@@ -66,9 +66,9 @@ class ParticleSystem {
 		_.chain(this.particles)
 			.filter( e => {return e.isAlive()} )
 			.each((p, i) => {
-				// p.vx += wind.x * wind.velocity;
-				// p.vy += wind.y * wind.velocity;
-				// p.vz += wind.z * wind.velocity;
+				// p.vx += wind.force.x * wind.speed;
+				// p.vy += wind.force.y * wind.speed;
+				// p.vz += wind.force.z * wind.speed;
 				p.update();
 
 				var po = p.__obj;

@@ -6,26 +6,33 @@ var cfg = {
 		near: 0.1,
 		far: 10000,
 		aspect: () => {
-			// return window.innerWidth / window.innerHeight;
 			return width() / height();
 		},
-		position: {
-			x: 0,
-			y: 0,
-			z: 650
-		},
+		position: new THREE.Vector3(0, 0, 650),
 		lookAt: new THREE.Vector3()
+	},
+	light: {
+		color: 0xffffff,
+		position: new THREE.Vector3(10, 50, 130)
+	},
+	tree: {
+		scale: 400,
+		position: new THREE.Vector3(0, -150, 0),
+		material: new THREE.MeshLambertMaterial({
+			color: 0xff0000,
+			// shading: THREE.FlatShading
+		})
 	},
 	ground: {
 		gridDesity: 25,
 		width:  1500,
 		height: 1500,
 		heightVariance: 20,
-		position: {
-			x: 0,
-			y: -160,
-			z: 0
-		}
+		position: new THREE.Vector3(0, -160, 0),
+		material: new THREE.MeshLambertMaterial({ // new THREE.MeshNormalMaterial()
+			color: 0xff0000,
+			// shading: THREE.FlatShading
+		})
 	},
 	flowers: {
 		count   : 500,
@@ -36,16 +43,10 @@ var cfg = {
 		velocity   : 3.5,
 		// rotVelocity: 7.5,
 		wind: {
-			x: 1,
-			y: -0.1,
-			z: 1,
+			force: new THREE.Vector3(1, -0.1, 1),
 			speed: .001
 		},
-		position: {
-			x: 0,
-			y: 0,
-			z: 0
-		}
+		position: new THREE.Vector3(0, 0, 0),
 	},
 	width: width,
 	height: height
