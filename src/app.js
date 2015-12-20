@@ -1,11 +1,10 @@
 'use strict';
 
-// TODO particles
-// TODO camera move
-// TODO all gl settings
 // TODO native Position class
-// TODO materials
 // TODO UI for config
+
+// TODO all gl settings
+// TODO materials
 
 import * as config from "./config";
 import ParticleSystem from "./particleSystem";
@@ -22,9 +21,11 @@ class App {
 			cameraOpt.aspect(),
 			cameraOpt.near,
 			cameraOpt.far);
+		this.camera.lookAt(cameraOpt.lookAt);
 		this.camera.position.x = cameraOpt.position.x;
 		this.camera.position.y = cameraOpt.position.y;
 		this.camera.position.z = cameraOpt.position.z;
+		this.controls = new THREE.OrbitControls(this.camera);
 
 		var sphereMaterial = new THREE.MeshLambertMaterial({
 			color: 0xCC0000
@@ -71,6 +72,7 @@ class App {
 	}
 
 	update(){
+		this.controls.update();
 		this.particles.update();
 	}
 

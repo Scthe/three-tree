@@ -27,17 +27,20 @@ class ParticleSystem {
 			p.__obj = po;
 			scene.add(po);
 		}
+
+		this._emit(cfg.count / 3);
 	}
 
 	update(){
-		this._updateExisting();
-		this._emit();
-	}
-
-	_emit(){
 		var cfg = config.flowers;
 
-		for(var i = 0; i < cfg.emitRate; i++){
+		this._updateExisting();
+		this._emit(cfg.emitRate);
+	}
+
+	_emit(cnt){
+
+		for(var i = 0; i < cnt; i++){
 			var p = _.find(this.particles, e => {return !e.isAlive()} );
 			if(p === undefined){
 				// console.log('no free particle slot');

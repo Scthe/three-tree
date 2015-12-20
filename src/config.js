@@ -13,7 +13,8 @@ var cfg = {
 			x: 0,
 			y: 0,
 			z: 650
-		}
+		},
+		lookAt: new THREE.Vector3()
 	},
 	ground: {
 		gridDesity: 25,
