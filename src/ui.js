@@ -41,19 +41,19 @@ class UI {
 		// folder.addColor(obj, 'color');
 		addVectorCtrls(folder, obj.position);
 
-		// folder.open();
-
-
+		// flowers
 		obj = cfg.flowers;
 		folder = gui.addFolder("Flowers");
-		// folder.add(obj, 'count', 10, 10000);
-		folder.add(obj, 'emitRate', 0, 1000);
-		folder.add(obj, 'range', 10, 1000);
+		folder.add(obj, 'count', 10, 10000);
+		// folder.add(obj, 'emitRate', 0, 1000);
+		// folder.add(obj, 'range', 10, 1000);
 		// folder.add(obj, 'life', 10, 1000);
 		// folder.add(obj, 'size', 1, 100);
-		folder.add(obj, 'velocity', 0.1, 20);
+		// folder.add(obj, 'velocity', 0.1, 20);
 		// folder.addColor(obj, 'color');
-		addVectorCtrls(folder, obj.position);
+		// addVectorCtrls(folder, obj.position);
+
+		folder.open();
 
 		obj = cfg.flowers.wind;
 		folder = gui.addFolder("Wind");

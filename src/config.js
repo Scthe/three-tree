@@ -39,7 +39,7 @@ var cfg = {
 		range   : 300,
 		emitRate: 60,
 		life    : [75, 225],
-		size    : [10, 20],
+		scale   : [10, 20],
 		velocity   : 3.5,
 		// rotVelocity: 7.5,
 		wind: {
@@ -47,6 +47,9 @@ var cfg = {
 			speed: .001
 		},
 		position: new THREE.Vector3(0, 0, 0),
+		material: new THREE.MeshLambertMaterial({
+			color: 0x00ff00
+		})
 	},
 	width: width,
 	height: height
