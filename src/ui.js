@@ -1,6 +1,7 @@
 'use strict';
 
 import * as config from "./config";
+import Ground from "./ground";
 
 const SCENE_RANGE = 750;
 
@@ -30,18 +31,18 @@ class UI {
 		// addColorCtrls(folder, obj.material.color);
 		addVectorCtrls(folder, obj.position);
 
-		folder.open();
-
-
 		// ground
-		obj = cfg.ground;
+		obj = scene.getObjectByName('ground');
 		folder = gui.addFolder("Ground");
-		// folder.add(obj, 'density', 3, 100);
-		// folder.add(obj, 'width' , 100, 5000);
-		// folder.add(obj, 'height', 100, 5000);
-		// folder.add(obj, 'heightVariance', 0, 80);
+		groundGeomProperty(folder, obj, 'gridDensity', 3, 100);
+		groundGeomProperty(folder, obj, 'width',  100, 5000);
+		groundGeomProperty(folder, obj, 'height', 100, 5000);
+		groundGeomProperty(folder, obj, 'heightVariance', 0, 80);
 		// folder.addColor(obj, 'color');
-		// addVectorCtrls(folder, obj.position);
+		addVectorCtrls(folder, obj.position);
+
+		// folder.open();
+
 
 		obj = cfg.flowers;
 		folder = gui.addFolder("Flowers");
@@ -67,6 +68,27 @@ class UI {
 
 }
 
+/**
+ * We have to recreate geometry, since change of buffer sizes is forbidden
+ */
+function groundGeomProperty(folder, obj, prop, min, max){
+	var groundGeom = obj.geometry,
+	    oldCfg = groundGeom.cfg,
+	    a = {};
+	a[prop] = oldCfg[prop];
+
+
+	folder.add(a, prop, min, max).step(1).onChange(function(value) {
+		a[prop] = value;
+
+		groundGeom.dispose();
+
+		var g = new Ground(oldCfg);
+		g.init(a)
+		obj.geometry = g;
+	});
+};
+
 function addVectorCtrls(gui, pos){
 	gui.add(pos, 'x', -SCENE_RANGE, SCENE_RANGE);
 	gui.add(pos, 'y', -SCENE_RANGE, SCENE_RANGE);
@@ -90,7 +112,6 @@ function addSingleValueToVectorCtrls(gui, obj, prop, min, max){
 	a[prop] = obj[prop].x;
 
 	gui.add(a, prop, min, max).onChange(function(value) {
-		// obj[prop].x = obj[prop].y = obj[prop].z = value;
 		obj[prop].set(value, value, value);
 	});
 }
