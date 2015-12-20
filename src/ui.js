@@ -56,17 +56,31 @@ class UI {
 		// folder.addColor(obj, 'color');
 		addVectorCtrls(folder, obj.position);
 
-		folder.open();
+		// folder.open();
 
 		obj = cfg.flowers.wind;
 		folder = gui.addFolder("Wind");
 		folder.add(obj, 'speed' , 0, 10);
 		addVectorCtrls(folder, obj.force);
 
-
+		// orbit
 		// TODO orbit speed
-		// gui.add(text, 'speed', { Stopped: 0, Slow: 0.1, Fast: 5 } );
-		// TODO disable mouse
+		var ctrl = app.getControls(),
+		    orbitProps = {},
+				orbitSpeed = {
+					Slow: 0.5,
+					Normal: 1,
+					Fast: 5
+				};
+		orbitProps['Orbit speed'] = ctrl.rotateSpeed;
+		orbitProps['Orbit enabled'] = ctrl.enabled;
+
+		// gui.add(orbitProps, 'Orbit speed', orbitSpeed).onChange( v => {
+			// console.log(v);
+		// });
+		gui.add(orbitProps, 'Orbit enabled').onChange( v => {
+			ctrl.enabled = v;
+		});
 	}
 
 }

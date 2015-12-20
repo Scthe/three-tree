@@ -1,8 +1,5 @@
 'use strict';
 
-// TODO native Position class
-// TODO UI for config
-
 // TODO all gl settings
 // TODO materials
 
@@ -95,6 +92,11 @@ class App {
 	getParticleSystem(){
 		return this.particles;
 	}
+
+	getControls(){
+		return this.controls;
+	}
+
 }
 
 export default App;
