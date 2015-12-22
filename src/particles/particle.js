@@ -55,7 +55,7 @@ class Particle extends THREE.Mesh{
 		);
 
 		this.visible = true;
-		this.material.opacity = 1.0;
+		this.material.opacity = 0.0;
 	}
 
 	onDie(){

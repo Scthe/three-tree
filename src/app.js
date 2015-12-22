@@ -1,10 +1,8 @@
 'use strict';
 
 // TODO make data driven
-// TODO 3-point lighting
 // TODO Emitter as 3DObject
 
-// TODO pop on spawn
 // TODO better spawn position
 
 // TODO all gl settings
@@ -51,15 +49,26 @@ class App {
 		*/
 
 		// light
-		var lightCfg = config.light,
-		    pointLight = new THREE.PointLight(lightCfg.color);
-		pointLight.name = 'light';
-		pointLight.position.setVector(lightCfg.position);
+		var lightCfg = config.lights;
+		_.each(lightCfg, (lCfg) => {
+			var pointLight = new THREE.PointLight(lCfg.color);
+			pointLight.name = lCfg.name;
+			pointLight.position.setVector(lCfg.position);
+
+			var props = ['intensity', 'distance', 'decay'];
+			_.each(props, p => {
+				if(lCfg.hasOwnProperty(p)){
+					pointLight[p] = lCfg[p];
+				}
+			});
+
+			scene.add(pointLight);
+		});
 
 
 		// tree
 		var loader = new THREE.OBJLoader();
-		loader.load( "vendor/models/tree.obj", function ( object ) {
+		loader.load( "vendor/models/tree.obj", (object) => {
 			var treeCfg = config.tree;
 			object = object.children[0];
 			object.name = 'tree';
@@ -86,7 +95,6 @@ class App {
 		// scene.add(this.sphere);
 		scene.add(ground);
 		scene.add(this.camera);
-		scene.add(pointLight);
 
 		return loadedPromise;
 	}

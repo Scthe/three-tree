@@ -13,10 +13,29 @@ var cfg = {
 		position: new THREE.Vector3(0, 0, 650),
 		lookAt: new THREE.Vector3()
 	},
-	light: {
-		color: 0xffffff,
-		position: new THREE.Vector3(275, 375, 260)
-	},
+	lights: [
+		{
+			name: 'light_1',
+			intensity: 1.0,
+			distance: 2200,
+			color: 0xffffff,
+			position: new THREE.Vector3(570, 420, 80)
+		}, {
+			name: 'light_2',
+			color: 0xebc3a1,
+			intensity: 0.35,
+			distance: 2100,
+			decay: 0.5,
+			position: new THREE.Vector3(-400, 375, 130)
+		}, {
+			name: 'light_3',
+			color: 0xa1c8eb,
+			intensity: 0.15,
+			distance: 2100,
+			decay: 0.6,
+			position: new THREE.Vector3(-150, 40, -420)
+		}
+	],
 	tree: {
 		scale: 400,
 		position: new THREE.Vector3(0, -150, 0),
@@ -28,7 +47,7 @@ var cfg = {
 		gridDensity: 45,
 		width:  3000,
 		height: 3300,
-		heightVariance: 20,
+		heightVariance: 30,
 		position: new THREE.Vector3(0, -160, 0),
 		material: new THREE.MeshLambertMaterial({
 			color: 0xf5f5f5
@@ -40,7 +59,7 @@ var cfg = {
 		range   : 170,
 		emitRate: 60,
 		life    : [75, 225],
-		scale   : [10, 15],
+		scale   : [8, 13],
 		velocity   : 1.6,
 		rotVelocity: 0.07,
 		wind: {
@@ -54,20 +73,19 @@ var cfg = {
 		}),
 		animations: [
 			new AnimatedProperty('material.opacity', {
-				1.0: 0.8,
-				0.7: 1.0,
-				0.5: 1.0,
+				1.0: 0.0,
+				0.6: 1.0,
 				0.0: 0.0
 			}),
-			new AnimatedProperty('scale', {
-				1.0: 0.5,
-				0.5: 1.0,
-				0.0: 1.0
-			})
+			/*new AnimatedProperty('scale', {
+				1.0: 0.7,
+				0.6: 1.0,
+				0.0: 0.5
+			})*/
 		]
 	},
 	fog: {
-		color: 0xffffff,
+		color: 0xf0f0f0,
 		density: 0.0005
 	},
 	background: new THREE.Color(0xe3e3e3),

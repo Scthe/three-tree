@@ -18,7 +18,7 @@ class AnimatedProperty {
 
 	apply(object, lifeMoment){
 		var animatedObject = object,
-				val = this._value(lifeMoment);
+				val = this._interpolate(lifeMoment);
 
 		// follow sub properties
 		for(var i = 0; i < this.subPropertesChain.length; i++){
@@ -31,7 +31,7 @@ class AnimatedProperty {
 		}
 	}
 
-	_value(lifeMoment){
+	_interpolate(lifeMoment){
 		var rightIdx = _.sortedIndex(this.idx, lifeMoment);
 		rightIdx = Math.max(1, Math.min(rightIdx, this.idx.length - 1));
 
@@ -46,7 +46,7 @@ class AnimatedProperty {
 
 	_setProperty(obj, propName, value){
 		if(obj[propName] instanceof THREE.Vector3){
-			value *= obj['__'+propName];
+			value *= obj['__'+propName]; // TODO weird assumption that this exists
 			obj[propName].set(value, value, value);
 		} else if (typeof obj[propName] === "number"){
 			obj[propName] = value;

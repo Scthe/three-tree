@@ -23,13 +23,17 @@ class UI {
 		gui.add(scene.fog, 'density', 0.0, 0.005).name('Fog density');
 
 		// light
-		obj = scene.getObjectByName('light');
-		folder = gui.addFolder("Light");
-		addColorCtrls(folder, obj.color);
-		folder.add(obj, 'intensity', 0.1, 1);
-		folder.add(obj, 'distance', 0.1, SCENE_RANGE * 3);
-		folder.add(obj, 'decay', 0.1, 1);
-		addVectorCtrls(folder, obj.position);
+		var lightCfg = config.lights;
+		_.each(lightCfg, (lCfg) => {
+			folder = gui.addFolder(lCfg.name);
+			obj = scene.getObjectByName(lCfg.name);
+
+			addColorCtrls(folder, obj.color);
+			folder.add(obj, 'intensity', 0.1, 1);
+			folder.add(obj, 'distance', 0.1, SCENE_RANGE * 3);
+			folder.add(obj, 'decay', 0.1, 1);
+			addVectorCtrls(folder, obj.position);
+		});
 
 		// tree
 		obj = scene.getObjectByName('tree');
