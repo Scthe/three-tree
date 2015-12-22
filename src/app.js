@@ -1,10 +1,18 @@
 'use strict';
 
-// TODO all gl settings
+// TODO make data driven
+// TODO 3-point lighting
+// TODO Emitter as 3DObject
+
+// TODO pop on spawn
 // TODO better spawn position
 
+// TODO all gl settings
+// TODO github badge
+// TODO mobile - force landscape
+
 import * as config from "./config";
-import ParticleSystem from "./particleSystem";
+import ParticleSystem from "./particles/particleSystem";
 import Ground from "./ground";
 
 class App {

@@ -1,6 +1,6 @@
 'use strict';
 
-import * as config from "./config";
+import * as config from "../config";
 
 class Particle extends THREE.Mesh{
 
@@ -26,15 +26,6 @@ class Particle extends THREE.Mesh{
 		rot.setY(toAngle(rot.y));
 		rot.setZ(toAngle(rot.z));
 		this.rotation.setFromVector3(rot);
-
-		this.material.opacity = this.getOpacity();
-	}
-
-	getOpacity(){
-		if(!this.isAlive()) return 0;
-
-		var halfLife = this.maxLife/2;
-		return this.life > halfLife ? 1.0 : this.life / halfLife;
 	}
 
 	onSpawn(particleSystemCfg){
@@ -45,6 +36,7 @@ class Particle extends THREE.Mesh{
 
 		this.life = this.maxLife = randomRange(particleSystemCfg.life);
 		var sc = randomRange(particleSystemCfg.scale);
+		this.__scale = sc;
 		this.scale.set(sc,sc,sc);
 		this.position.set(
 			randomRange(-range, range) + basePoint.x - this.scale.x/2,

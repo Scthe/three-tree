@@ -1,5 +1,7 @@
 'use strict';
 
+import AnimatedProperty from "./particles/animatedProperty";
+
 var cfg = {
 	camera: {
 		angle: 45,
@@ -34,6 +36,7 @@ var cfg = {
 	},
 	flowers: {
 		count   : 1500,
+		// count   : 1,
 		range   : 170,
 		emitRate: 60,
 		life    : [75, 225],
@@ -48,7 +51,20 @@ var cfg = {
 		material: new THREE.MeshLambertMaterial({
 			color: 0xcf4f93,
 			// side: THREE.DoubleSide
-		})
+		}),
+		animations: [
+			new AnimatedProperty('material.opacity', {
+				1.0: 0.8,
+				0.7: 1.0,
+				0.5: 1.0,
+				0.0: 0.0
+			}),
+			new AnimatedProperty('scale', {
+				1.0: 0.5,
+				0.5: 1.0,
+				0.0: 1.0
+			})
+		]
 	},
 	fog: {
 		color: 0xffffff,

@@ -1,20 +1,39 @@
 'use strict';
 
-import * as config from "./config";
+import * as config from "../config";
 import Particle from "./particle";
 
 
+/**
+ * This class acts as Emitter
+ */
 class ParticleSystem {
 
 	constructor(scene){
 		console.log('ParticleSystem()');
-		this.cfg = config.flowers;
+
 		this.scene = scene;
+		this.cfg = config.flowers;
+		this.animations = this.cfg.animations;
 
 		this.geo = ParticleSystem.createParticleGeometry();
 
 		this.particles = [];
 		this._fillParticleArray(this.cfg.count);
+
+		/*
+		this._animate('material.opacity', lifeMoment => {
+			return lifeMoment > 0.5 ? 1.0 : lifeMoment * 2;
+		});
+		this._animate('scale', (lifeMoment, p) => {
+			var sc = p.__scale;
+			if(lifeMoment > 0.9){
+				sc *= 1 - (lifeMoment - 0.9) * 10;
+			}
+
+			p.scale.set(sc,sc,sc);
+		});
+		*/
 
 		this._emit(this.cfg.count / 3);
 	}
@@ -23,32 +42,28 @@ class ParticleSystem {
 		var i = this.particles.length;
 		for(; i < cnt; i++){
 
-			var material = this.createMaterial();
+			var material = this._createMaterial();
 
 			var p = new Particle(this.geo, material);
-
-			// p.onSpawn();
 			p.onDie();
 
 			this.particles.push(p);
-
 			this.scene.add(p);
 		}
 		console.log(`particle array has ${this.particles.length} entries`);
 	}
 
-	createMaterial(){
+	_createMaterial(){
 		var m = this.cfg.material,
 		    material = new THREE.MeshLambertMaterial();
+
 		_.chain(m)
 		  .keys()
-			.filter( k => {
-				return !_.isFunction(m[k]);
-			})
-			.each( k => {
-				material[k] = m[k];
-			});
+			.filter( k => { return !_.isFunction(m[k]); })
+			.each( k => { material[k] = m[k]; });
+
 		material.transparent = true;
+
 		return material;
 	}
 
@@ -97,8 +112,17 @@ class ParticleSystem {
 
 				if(p.life < 0 ){
 					p.onDie();
+				} else {
+					this._applyAnimations(p);
 				}
 			});
+	}
+
+	_applyAnimations(p){
+		_.each(this.animations, anim => {
+			var lifeMoment = p.life / p.maxLife;
+			anim.apply(p, lifeMoment);
+		});
 	}
 
 	static createParticleGeometry(){
