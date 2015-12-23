@@ -40,7 +40,7 @@ module.exports = function(grunt) {
       'autoprefixer:dist',
       'browserify',
       'connect',
-      'watch',
+      'watch'
     ]);
   });
 
@@ -52,7 +52,7 @@ module.exports = function(grunt) {
     'clean',
     'copy:assets',
     'copy:vendor',
-    'browserify',
-    'autoprefixer:build'
+    'autoprefixer:build',
+    'browserify'
   ]);
 };

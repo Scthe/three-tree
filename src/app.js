@@ -6,7 +6,6 @@
 // TODO better spawn position
 
 // TODO all gl settings
-// TODO github badge
 // TODO mobile - force landscape
 
 import * as config from "./config";
